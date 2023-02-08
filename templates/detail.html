@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
 
     <meta charset="UTF-8">
@@ -86,9 +86,8 @@
     <style>
 
 
-
         . title {
-          font-size: 10px;
+            font-size: 10px;
         }
 
         .form-datecontrol {
@@ -106,7 +105,6 @@
             margin-top: 10px;
             font-weight: bold;
         }
-
 
 
     </style>
@@ -201,46 +199,52 @@
                 <p class="form-control" id="title">{{ detail.title }}</p>
                 </br>
                 <label for="content" class="form-label">내용</label>
-                <textarea class="form-control" id="content" name="content" disabled>{{ detail.content }}</textarea>
-                <img src="http://www.example.com/images/image.jpg" alt="image">
+                <p class="form-control" id="content" name="content">{{ detail.content }}</p>
+
             </div>
-        </div>
-        </br>
-
-
-
-        <div style="max-width: 800px;" class="container">
+            </br>
             <button type='button' class="btn btn-success"
-                onclick="javascript : location.href='index.html'">메인화면
+                    onclick="javascript : location.href='index.html'">메인화면
             </button>
         </div>
 
-        </br>
-        </br>
-        </br>
-        </br>
-        </br>
-
-        <div class="card-body">
-            <form class="form-horizontal">
-                <div class="row">
-                    <div class="form-group col-sm-8">
-                        <input class="form-control input-sm" id="newReplyText" type="text"
-                               placeholder="댓글 입력 시 [카카오 아이디] 남겨주세요.">
-                    </div>
-
-                    <div class="form-group col-sm-2">
-                        <input class="form-control input-sm" id="newReplyWriter" type="text" placeholder="닉네임">
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <button type="button" class="btn btn-success"
-                                onclick="javascript : location.href='index.html'"> 등록
-                        </button>
-                    </div>
+        <section class="page-section container" id="comment_list" style="max-width: 800px;">
+            <!-- Icon Divider-->
+            <div class="divider-custom" id="dividers">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+            <!-- 댓글 주의사항 -->
+            <div class="p-3" style="background-color: lemonchiffon; border-radius: 0.5em; ">
+                <div>
+                    <p style="font-weight: bold">💡 댓글 작성시 주의사항</p>
+                    <small>소중한 개인정보 노출을 유의해 주세요! 연락이 필요하다면 개인 전화번호를 공유하기보다 카카오톡 ID를 남겨보세요.</small>
                 </div>
-            </form>
-        </div>
-
+            </div>
+            <!-- 댓글 입력창 -->
+            <div class="mt-2 mb-4">
+                <form class="row">
+                    <!-- Name input-->
+                    <div class="form-floating col-sm-3 mx-auto mb-3">
+                        <input type="text" class="form-control" placeholder="Enter name" id="c_name" required>
+                        <label for="name">닉네임</label>
+                    </div>
+                    <!-- comment input-->
+                    <div class="form-floating col-sm-7 mx-auto mb-3">
+                        <input type="text" class="form-control" placeholder="Enter comment" id="comment" required>
+                        <label for="comment">댓글내용</label>
+                    </div>
+                    <!-- Submit Button-->
+                    <button class="btn btn-outline-primary mx-auto col-sm-1 mt-5" id="submitButton" type="submit"
+                            disabled="true" onclick="save_cmt()" style="height: 40px; width: 70px">등록
+                    </button>
+                </form>
+            </div>
+            <!-- 댓글 보여주기 // -->
+            <div class="container" style="max-width: 1000px;" id="cmt_box">
+            </div>
+        </section>
 
 
         </br>
@@ -290,7 +294,6 @@
 <div class="copyright py-4 text-center text-white">
     <div class="container"><small>Copyright &copy; PET GENIUS 2023</small></div>
 </div>
-
 
 </body>
 </html>
