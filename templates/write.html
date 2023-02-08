@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <!-- Favicon-->
+    <!--    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>-->
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+          type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../static/css/styles.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <script>
+
+
+        // 페이지 로딩 시 자동 실행
+        // $(document).ready(function () {
+        //     // alert("welcome!")
+        // });
+
+        // // 방금 등록한 글 상세페이지 보여주는 펑션 - 아직 구현 전
+        // 방금 등록한 글 번호 num을 서버로 넘겨 줌. 서버에서 해당 글 내용을 가져와서 response 하면, 디테일 페이지에 붙여 줘야 함.
+        function show_detail(num) {
+            window.location.href = "detail?num=" + num
+        }
+
+
+        // 글쓰기 페이지에서 '등록' 버튼 누르면 실행되는 펑션
+        function save_write() {
+            // 브라우저에 입력된 값 가져오기
+            let category = $('#category').val()
+            let role = $('#role').val()
+            let region = $('#region').val()
+            let name = $('#name').val()
+            let title = $('#title').val()
+            let content = $('#content').val()
+            //파일 자체를 받아와서 서버에 보내기
+            let file = $('#file')[0].files[0]
+            if (category == null || role == null || region == null || name == null || title == null || content == null || file == null) {
+                alert("모든 항목을 채워 주셔야 글이 등록됩니다.")
+            }
+
+            // 글쓴 날짜 시간 저장
+            let date = new Date();
+            let year = date.getFullYear();
+            let month = ('0' + (date.getMonth() + 1)).slice(-2);
+            let day = ('0' + date.getDate()).slice(-2);
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            let seconds = ('0' + date.getSeconds()).slice(-2);
+            let timestr = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+
+            // console.log(file)
+            let formData = new FormData()
+            formData.append('file', file);
+            formData.append('category', category);
+            formData.append('role', role);
+            formData.append('region', region);
+            formData.append('name', name);
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('time', timestr);
+
+            // 글 개수 가져 와서 +1 하여 다음 글 넘버 매겨 주기
+            $.ajax({
+                type: "GET",
+                url: "/board",
+                data: {},
+                success: function (response) {
+                    let rows = response['details']
+                    // alert(rows[0]['name'])
+                    let num = Object.keys(rows).length + 1
+                    // alert(num + category + role + region + name + title + content + file)
+
+
+                    formData.append('num', num);
+
+
+                    // ajax 이용해 POST 타입으로 서버에 보내기
+                    $.ajax({
+                        type: 'POST',
+                        url: '/write',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            alert(response['msg'])
+                            // 방금 등록한 글의 상세 페이지 보여줘야지
+                            console.log('방금 저장된 글번호:' + num)
+                            show_detail(num)
+                        }
+                    });
+                }
+            })
+
+        }
+
+        // function show_comment() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "/homework",
+        //         data: {},
+        //         success: function (response) {
+        //             let rows = response['comments']
+        //             for (let i = 0; i < rows.length; i++) {
+        //                 let nickname = rows[i]['nickname']
+        //                 let comment = rows[i]['comment']
+        //                 let temp_html = ` <div class="card">
+        //                                         <div class="card-body">
+        //                                             <blockquote class="blockquote mb-0">
+        //                                                 <p>${comment}</p>
+        //                                                 <footer class="blockquote-footer">${nickname}</footer>
+        //                                             </blockquote>
+        //                                         </div>
+        //                                     </div>`
+        //                 $('#comment-list').append(temp_html)
+        //             }
+        //         }
+        //     })
+        // }
+    </script>
+    <title>Pet Genius 글 작성</title>
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="#page-top">PET GENIUS</a>
+        <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/board">게시판</a>
+                </li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                                                     href="#contact">글 작성하기</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Masthead-->
+<header class="masthead bg-primary text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Avatar Image-->
+        <!--        <img class="masthead-avatar mb-5" src="highfive.jpg" alt="..."/>-->
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">PET GENIUS</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Masthead Subheading-->
+        <p class="masthead-subheading font-weight-light mb-0"> '펫시터'부터 '펫트레이너'까지! </br>
+            내 반려견을 위한 펫 지니어스들을 만나보세요</p>
+    </div>
+</header>
+<section>
+
+</section>
+<!-- Input Section-->
+<section class="page-section" id="contact">
+    <div class="container">
+        <!-- Contact Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">게시물 작성</h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Contact Section Form-->
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <!-- * * * * * * * * * * * * * * *-->
+                <!-- * * SB Forms Contact Form * *-->
+                <!-- * * * * * * * * * * * * * * *-->
+                <!-- This form is pre-integrated with SB Forms.-->
+                <!-- To make this form functional, sign up at-->
+                <!-- https://startbootstrap.com/solution/contact-forms-->
+                <!-- to get an API token!-->
+                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+
+                    <div class="form-floating mb-3">
+                        <div>
+                            <label for="category">선택</label>
+                            &ensp;
+                            <select id="category" name="category" title="구분" onchange="" class="select">
+                                <option value="">:: 구분 ::</option>
+                                <option value="도와 주세요">
+                                    도와 주세요
+                                </option>
+                                <option value="도와 드려요">
+                                    도와 드려요
+                                </option>
+                            </select>
+                            &ensp;
+                            <select id="role" name="role" title="역할" onchange="" class="select">
+                                <option value="">:: 역할 ::</option>
+                                <option value="반려견 훈련사">
+                                    반려견 훈련사
+                                </option>
+                                <option value="펫시터">
+                                    펫시터
+                                </option>
+                            </select>
+                            &ensp;
+                            <select id="region" name="region" title="시/도선택" onchange="" class="select">
+                                <option value="">:: 시/도 ::</option>
+                                <option value="서울특별시" title="서울특별시">
+                                    서울특별시
+                                </option>
+                                <option value="부산광역시" title="부산광역시"
+                                >
+                                    부산광역시
+                                </option>
+
+                                <option value="대구광역시" title="대구광역시"
+                                >
+                                    대구광역시
+                                </option>
+
+                                <option value="인천광역시" title="인천광역시"
+                                >
+                                    인천광역시
+                                </option>
+
+                                <option value="광주광역시" title="광주광역시"
+                                >
+                                    광주광역시
+                                </option>
+
+                                <option value="대전광역시" title="대전광역시"
+                                >
+                                    대전광역시
+                                </option>
+
+                                <option value="울산광역시" title="울산광역시"
+                                >
+                                    울산광역시
+                                </option>
+
+                                <option value="세종특별자치시" title="세종특별자치시"
+                                >
+                                    세종특별자치시
+                                </option>
+
+                                <option value="경기도" title="경기도"
+                                >
+                                    경기도
+                                </option>
+
+                                <option value="강원도" title="강원도"
+                                >
+                                    강원도
+                                </option>
+
+                                <option value="충청북도" title="충청북도"
+                                >
+                                    충청북도
+                                </option>
+
+                                <option value="충청남도" title="충청남도"
+                                >
+                                    충청남도
+                                </option>
+
+                                <option value="전라북도" title="전라북도"
+                                >
+                                    전라북도
+                                </option>
+
+                                <option value="전라남도" title="전라남도"
+                                >
+                                    전라남도
+                                </option>
+
+                                <option value="경상북도" title="경상북도"
+                                >
+                                    경상북도
+                                </option>
+
+                                <option value="경상남도" title="경상남도"
+                                >
+                                    경상남도
+                                </option>
+
+                                <option value="제주특별자치도" title="제주특별자치도"
+                                >
+                                    제주특별자치도
+                                </option>
+
+                            </select>
+
+                        </div>
+                    </div>
+                    </br>
+
+                    <!-- Name input-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="name" type="text" placeholder="Enter your name..."
+                               data-sb-validations="required"/>
+                        <label for="name">닉네임</label>
+                        <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                    </div>
+                    <!-- Title input-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="title" type="text" placeholder="Enter your title here..."
+                               data-sb-validations="required,email"/>
+                        <label for="title">제목</label>
+                        <div class="invalid-feedback" data-sb-feedback="title:required">An title is required.</div>
+                        <div class="invalid-feedback" data-sb-feedback="title:email">Title is not valid.</div>
+                    </div>
+
+                    <!-- Message input-->
+                    <div class="form-floating mb-3">
+
+                        <textarea class="form-control" placeholder="Enter your message here..." id="content"></textarea>
+                        <label for="content">내용</label>
+                        <div class="invalid-feedback" data-sb-feedback="content:required">A message is required.
+                        </div>
+                    </div>
+                    </br>
+                    <!-- 이미지/동영상 업로더 -->
+
+                    <form action="/write" method="post" enctype="multipart/form-data" class="form-control">
+                        <label for="file"></label>
+                        <input type="file" class="form-control" id="file" name="file"/>
+                        <!--                        <input type="submit" value="Upload">-->
+                        <div class="invalid-feedback" data-sb-feedback="file:required">A file is required.</div>
+                        <div class="invalid-feedback" data-sb-feedback="file:file">File is not valid.</div>
+                    </form>
+                    </br>
+
+                    <!-- Submit success message-->
+                    <!---->
+                    <!-- This is what your users will see when the form-->
+                    <!-- has successfully submitted-->
+                    <div class="d-none" id="submitSuccessMessage">
+                        <div class="text-center mb-3">
+                            <div class="fw-bolder">Form submission successful!</div>
+                            To activate this form, sign up at
+                            <br/>
+                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                        </div>
+                    </div>
+                    <!-- Submit error message-->
+                    <!---->
+                    <!-- This is what your users will see when there is-->
+                    <!-- an error submitting the form-->
+                    <div class="d-none" id="submitErrorMessage">
+                        <div class="text-center text-danger mb-3">Error sending message!</div>
+                    </div>
+
+                    </br>
+                    <!-- Submit Button-->
+                    <button class="btn btn-cancel" id="cancelButton" type="button" onclick="">취소</button>
+                    <button class="btn btn-primary" type="button" onclick="save_write()">등록</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Footer-->
+<footer class="footer text-center">
+    <div class="container">
+        <div class="row">
+            <!-- Footer Location-->
+            <div class="col-lg-4 mb-5 mb-lg-0">
+                <h4 class="text-uppercase mb-4">CONTACT</h4>
+                <p class="lead mb-0">
+                    info@petgenius.com
+                    <br/>
+                    +82 - 2 - 000 - 0000
+                    <br/>
+                    Seoul, Republic of Korea
+                </p>
+            </div>
+            <!-- Footer Social Icons-->
+            <div class="col-lg-4 mb-5 mb-lg-0">
+                <h4 class="text-uppercase mb-4">Around the Web</h4>
+                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
+                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
+                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
+                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
+            </div>
+            <!-- Footer About Text-->
+            <div class="col-lg-4">
+                <h4 class="text-uppercase mb-4">About PET GENIUS</h4>
+                <p class="lead mb-0">
+                    무슨 말을 써야 하나...
+                    <a href="http://startbootstrap.com">(링크 삽입 가능)</a>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Copyright Section-->
+<div class="copyright py-4 text-center text-white">
+    <div class="container"><small>Copyright &copy; PET GENIUS 2023</small></div>
+</div>
+</body>
+</html>
