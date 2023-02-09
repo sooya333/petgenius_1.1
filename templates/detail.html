@@ -85,27 +85,15 @@
 
     <style>
 
-
-        . title {
-            font-size: 10px;
+        .form-label, .form-datecontrol {
+            display: inline-block;
+            vertical-align: top;
         }
 
-        .form-datecontrol {
-            font-size: 13px;
-            color: black;
-            font-weight: bold;
-        }
+        .form-namecontrol {
+            text-align: left;
 
-        .form-control {
-            font-size: 15px;
         }
-
-        .form-label {
-            font-size: 15px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
 
     </style>
 
@@ -178,34 +166,62 @@
         </br>
         </br>
         <!--        가져온 데이터가 붙는 곳 -->
+
+
         <div id="detail_box" style="max-width: 800px;" class="container">
-            <img src="data:image/*;base64,{{ encoded_string }}"/>
+
             <div>
                 <span class="badge bg-primary">{{ detail.category }}</span>
                 <span class="badge bg-success">{{ detail.role }}</span>
                 <span class="badge bg-warning">{{ detail.region }}</span>
             </div>
             </br>
+
+            <div style="text-align: center;">
+                <img src="data:image/*;base64,{{ encoded_string }}" style="width: 600px; height: 350px;">
+            </div>
+
+            </br>
             </br>
             <div class="mb-3">
-                <label for="Date" class="form-label">작성일</label>
-                <p class="form-datecontrol" id="Date">{{ detail.time }} </p>
-                <label for="name" class="form-label">작성자</label>
-                <p class="form-control" id="name">{{ detail.name }}</p>
-            </div>
-            </br>
-            <div class="test1">
-                <label for="title" class="form-label">제목</label>
-                <p class="form-control" id="title">{{ detail.title }}</p>
-                </br>
-                <label for="content" class="form-label">내용</label>
-                <p class="form-control" id="content" name="content">{{ detail.content }}</p>
+
+                <div style="width: 800px; height: 50px; background-color: white;">
+                    <label for="Date" class="form-label">작성일</label>
+                    <p class="form-datecontrol" id="Date">{{ detail.time }}</p>
+                    <p class="form-namecontrol">{{ detail.name }}</p>
+                </div>
+
 
             </div>
             </br>
-            <button type='button' class="btn btn-success"
-                    onclick="javascript : location.href='index.html'">메인화면
-            </button>
+            </br>
+            <div class="test1">
+
+                <div style="width: 800px; height: 50px; background-color: white;">
+                    <p style="text-align: center; color: black; font-weight: bold; font-size: 20px; padding: 10px;">
+                        {{ detail.title }}</p>
+                </div>
+                </br>
+                </br>
+                </br>
+
+            </div>
+
+            <div style="width: 800px; height: 100px; background-color: gainsboro;">
+                <p style="text-align: center; color: black; font-size: 16px; padding: 25px;">{{ detail.content
+                    }}</p>
+            </div>
+
+
+            </br>
+            </br>
+
+            <div style="text-align: center;">
+                <button type='button' class="btn btn-success"
+                        onclick="javascript : location.href='index.html'">메인화면
+                </button>
+            </div>
+
         </div>
 
         <section class="page-section container" id="comment_list" style="max-width: 800px;">
