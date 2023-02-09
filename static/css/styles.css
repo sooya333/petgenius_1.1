@@ -1177,6 +1177,7 @@ progress {
   }
 
   .col-md-6 {
+    align-content: center;
     flex: 0 0 auto;
     width: 50%;
   }
@@ -7405,8 +7406,18 @@ textarea.form-control-lg {
   margin-bottom: 1.5rem !important;
 }
 
+.mb-5-add {
+  margin-bottom: 3rem !important;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
 .mb-5 {
   margin-bottom: 3rem !important;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
 }
 
 .mb-auto {
