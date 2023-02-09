@@ -80,14 +80,19 @@ def board_get():
 def detail_get():
     num = request.args.get("num")
     print("디테일2 서버가 받은 넘버는 " + num)
+    # 게시글 상세내용
     detail = db.genius.find_one({'num': num}, {'_id': False})
     # print(detail)
+    # 게시글 이미지
     img_binary = db.g_imgs.find_one({'num': num}, {'_id': False})
     encoded_string = base64.b64encode(img_binary['img']).decode("utf-8")
     if detail == '' or encoded_string == '':
         print("detail2의 디테일 인코디드 스트링 값없음")
     else:
         print("디테일, 인코디드 값 있음")
+    # # 게시글 댓글
+    # cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
+    # print(cmt_list) && cmt_list=cmt_list,
     # return jsonify({'detail': detail, 'encoded_string': encoded_string})
     # return jsonify({'detail': detail, 'encoded_string': encoded_string})
     # return render_template('detail.html', detail=detail)
@@ -98,15 +103,15 @@ def detail_get():
 # 댓글 내용 가져오기
 @app.route('/comment', methods=['GET'])
 def comment_get():
-    # num = request.args.get("b_num")
+    num = request.args.get("b_num")
     # print("b_num = " + num)
-    all_cmt = list(db.comments.find({}, {'_id': False}))
-    # print(all_cmt)
-    return jsonify({'cmt_list': all_cmt})
+    cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
+    print(cmt_list)
+    return jsonify({'cmt_list': cmt_list})
 
 
 # 댓글 내용 저장하기
-@app.route('/comment', methods=['POST'])
+@app.route('/detail', methods=['POST'])
 def comment_post():
     b_num_receive = request.form['b_num_give']
     name_receive = request.form['name_give']
