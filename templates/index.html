@@ -89,25 +89,24 @@
 
                         if (i - flag < 9) {
                                 let temp_html = `<!-- modal 대신 url 넣을 수 있도록 -->
-                                                <button class="btn btn-light" type="button" id="myButton" onclick="show_detail(${num})">
-                                                <div class="col">
-                                                    <div class="card h-100">
-                                                        <img class="card-img-top" src="data:image/*;base64,${img_string}"/>
-                                                            <div class="card-body">
-                                                                <span class="badge rounded-pill ${category_color} mb-3">${category}</span>
-                                                                <span class="badge rounded-pill ${role_color}">${role}</span>
-                                                                <span class="badge rounded-pill bg-dark">${region}</span>
-                                                            </div>
-                                                            <div>
-                                                                <h5 class="card-title">${title}</h5>
-<!--                                                    <h6 class="card-subtitle text-muted">서브타이틀 자리</h6>-->
-<!--                                                    <p class="card-text">내용 나오는거</p>-->
-                                                                <span>${name}</span>
-                                                                <span>날짜</span>
-                                                            </div>
+                                                <button class="card portfolio-item mx-auto align-items-center" data-bs-toggle="modal" data-bs-target="#portfolioModal1" type="button" id="myButton" onclick="show_detail(${num})">
+                                                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                                        <div class="portfolio-item-caption-content text-center text-white">
+                                                            <i>상세페이지 보기</i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </button>`
+                                                            <img class="card-img-top" height="200" src="data:image/*;base64,${img_string}"/>
+                                                                <div class="card-body">
+                                                                    <span class="badge rounded-pill ${category_color} mb-3">${category}</span>
+                                                                    <span class="badge rounded-pill ${role_color}">${role}</span>
+                                                                    <span class="badge rounded-pill bg-dark">${region}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h5 class="card-title">${title}</h5>
+                                                                    <span>${name}</span>
+                                                                    <span>날짜</span>
+                                                                </div>
+                                                </button>`
                                 $('#cards-box').append(temp_html)
                             }
                     }
