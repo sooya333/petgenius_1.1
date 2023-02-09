@@ -73,7 +73,7 @@
                         let title = details[i]['title']
                         let name = details[i]['name']
                         // let content = details[i]['content']
-                        let file = details[i]['file']
+                        let time = details[i]['time']
                         let category_color = '';
                         if (category === '도와 주세요') {
                             category_color = 'bg-danger';
@@ -86,7 +86,7 @@
                         } else {
                             role_color = 'bg-info';
                         }
-
+                        let timeSlice = time.substring(0, 10)
                         if (i - flag < 9) {
                                 let temp_html = `<!-- modal 대신 url 넣을 수 있도록 -->
                                                 <button class="card portfolio-item mx-auto align-items-center" data-bs-toggle="modal" data-bs-target="#portfolioModal1" type="button" id="myButton" onclick="show_detail(${num})">
@@ -103,11 +103,11 @@
                                                                 </div>
                                                                 <div>
                                                                     <h5 class="card-title">${title}</h5>
-                                                                    <span>${name}</span>
-                                                                    <span>날짜</span>
+                                                                    <span><strong>${name}</strong></span>
+                                                                    <span class="badge bg-light text-dark">${timeSlice}</span>
                                                                 </div>
                                                 </button>`
-                                $('#cards-box').append(temp_html)
+                                $('#cards-box').prepend(temp_html)
                             }
                     }
             }
