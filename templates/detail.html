@@ -22,7 +22,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <style>
 
+
+        . title {
+            font-size: 10px;
+        }
+
+        .form-datecontrol {
+            font-size: 13px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .form-control {
+            font-size: 15px;
+        }
+
+        .form-label {
+            font-size: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+
+    </style>
 
     <script>
         <!--페이지 열자마자 실행-->
@@ -75,21 +99,26 @@
                 url: "/detail",
                 data: {'num': num},
                 success: function (response) {
-                    let detail = response.detail
+                    // window.onload = function () {
+                    //     console.log('여기')
+                    //     let detail = JSON.parse(document.getElementById('detail').innerHTML);
+                    //     let img_string = document.getElementById('img_string').innerHTML;
+                    //     console.log(detail);
+                    //     console.log(img_string);
                     //
-                    // let image = detail['image']
-                    // let category = detail['category']
-                    // let role = detail['role']
-                    // let region = detail['region']
-                    // let title = detail['title']
-                    // let name = detail['name']
-                    // let content = detail['content']
-                    // let file = detail['file']
-                    // let time = detail['time']
                     //
-                    // // alert(name+" "+title)
+                    //     let category = detail['category']
+                    //     console.log(category)
+                    //     let role = detail['role']
+                    //     let region = detail['region']
+                    //     let title = detail['title']
+                    //     let name = detail['name']
+                    //     let content = detail['content']
+                    //     let time = detail['time']
                     //
-                    // let temp_html = ` <div>
+                    //     alert(name + " " + title)
+                    //
+                    //     let temp_html = ` <div>
                     //
                     //                        <span class="badge bg-primary">${category}</span>
                     //                        <span class="badge bg-success">${role}</span>
@@ -112,8 +141,8 @@
                     //                         <textarea class="form-control" id="content" name="content" disabled>${content}</textarea>
                     //                         <img src="http://www.example.com/images/image.jpg" alt="image">
                     //                    </div>`
-                    // $('#detail_box').append(temp_html)
-
+                    //     $('#detail_box').append(temp_html)
+                    // }
                 }
             })
         }
@@ -159,31 +188,6 @@
 
     </script>
 
-    <style>
-
-
-        . title {
-            font-size: 10px;
-        }
-
-        .form-datecontrol {
-            font-size: 13px;
-            color: black;
-            font-weight: bold;
-        }
-
-        .form-control {
-            font-size: 15px;
-        }
-
-        .form-label {
-            font-size: 15px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-
-    </style>
 
 </head>
 
@@ -236,11 +240,19 @@
         </br>
         <!--        가져온 데이터가 붙는 곳 -->
         <div id="detail_box" style="max-width: 800px;" class="container">
-            <img src="data:image/*;base64,{{ encoded_string }}"/>
+            <img src="data:image/*;base64,{{ img_string }}"/>
             <div>
-                <span class="badge bg-primary">{{ detail.category }}</span>
-                <span class="badge bg-success">{{ detail.role }}</span>
-                <span class="badge bg-warning">{{ detail.region }}</span>
+                {% if detail.category == "도와 주세요" %}
+                <span class="badge bg-danger">{{ detail.category }}</span>
+                {% else %}
+                <span class="badge bg-warning">{{ detail.category }}</span>
+                {% endif %}
+                {% if detail.role == "반려견 훈련사" %}
+                <span class="badge bg-primary">{{ detail.role }}</span>
+                {% else %}
+                <span class="badge bg-info">{{ detail.role }}</span>
+                {% endif %}
+                <span class="badge bg-dark">{{ detail.region }}</span>
             </div>
             </br>
             </br>
