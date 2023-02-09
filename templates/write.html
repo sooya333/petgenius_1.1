@@ -107,6 +107,14 @@
 
         }
 
+        function cancel_write(){
+            let value = confirm('정말 작성을 취소하시겠습니까?');
+            if (value == true) {
+                window.location.href = '/#portfolio'
+            } else if (value == false) {
+                return;
+            }
+        }
         // function show_comment() {
         //     $.ajax({
         //         type: "GET",
@@ -130,6 +138,7 @@
         //         }
         //     })
         // }
+
     </script>
     <title>Pet Genius 글 작성</title>
 </head>
@@ -308,7 +317,7 @@
                     <!-- Title input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" id="title" type="text" placeholder="Enter your title here..."
-                               data-sb-validations="required,email"/>
+                              maxlength="30" data-sb-validations="required,email"/>
                         <label for="title">제목</label>
                         <div class="invalid-feedback" data-sb-feedback="title:required">An title is required.</div>
                         <div class="invalid-feedback" data-sb-feedback="title:email">Title is not valid.</div>
@@ -356,7 +365,7 @@
 
                     </br>
                     <!-- Submit Button-->
-                    <button class="btn btn-cancel" id="cancelButton" type="button" onclick="">취소</button>
+                    <button class="btn btn-cancel btn-outline-secondary" id="cancelButton" type="button" onclick="cancel_write()">취소</button>
                     <button class="btn btn-primary" type="button" onclick="save_write()">등록</button>
 
                 </form>
