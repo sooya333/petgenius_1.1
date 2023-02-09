@@ -7,7 +7,7 @@
     <meta name="author" content=""/>
 
     <!-- Favicon-->
-    <!--    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>-->
+    <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico"/>
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts-->
@@ -16,6 +16,7 @@
           type="text/css"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../static/css/styles.css" rel="stylesheet"/>
+    <script src="/static/js/scripts.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -106,6 +107,14 @@
 
         }
 
+        function cancel_write(){
+            let value = confirm('정말 작성을 취소하시겠습니까?');
+            if (value == true) {
+                window.location.href = '/#portfolio'
+            } else if (value == false) {
+                return;
+            }
+        }
         // function show_comment() {
         //     $.ajax({
         //         type: "GET",
@@ -129,6 +138,7 @@
         //         }
         //     })
         // }
+
     </script>
     <title>Pet Genius 글 작성</title>
 </head>
@@ -136,7 +146,7 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="#page-top">PET GENIUS</a>
+        <a class="navbar-brand" href="/">PET GENIUS</a>
         <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -145,7 +155,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/board">게시판</a>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/#portfolio">게시판</a>
                 </li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                                                      href="#contact">글 작성하기</a></li>
@@ -154,27 +164,11 @@
     </div>
 </nav>
 
-<!-- Masthead-->
-<header class="masthead bg-primary text-white text-center">
-    <div class="container d-flex align-items-center flex-column">
-        <!-- Masthead Avatar Image-->
-        <!--        <img class="masthead-avatar mb-5" src="highfive.jpg" alt="..."/>-->
-        <!-- Masthead Heading-->
-        <h1 class="masthead-heading text-uppercase mb-0">PET GENIUS</h1>
-        <!-- Icon Divider-->
-        <div class="divider-custom divider-light">
-            <div class="divider-custom-line"></div>
-            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-            <div class="divider-custom-line"></div>
-        </div>
-        <!-- Masthead Subheading-->
-        <p class="masthead-subheading font-weight-light mb-0"> '펫시터'부터 '펫트레이너'까지! </br>
-            내 반려견을 위한 펫 지니어스들을 만나보세요</p>
-    </div>
+<!-- 이미지 배너 -->
+<header class="bg-primary">
+    <img class="banner" src="/static/img/banner/banner_writing.png" alt="..."/>
 </header>
-<section>
 
-</section>
 <!-- Input Section-->
 <section class="page-section" id="contact">
     <div class="container">
@@ -323,7 +317,7 @@
                     <!-- Title input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" id="title" type="text" placeholder="Enter your title here..."
-                               data-sb-validations="required,email"/>
+                              maxlength="30" data-sb-validations="required,email"/>
                         <label for="title">제목</label>
                         <div class="invalid-feedback" data-sb-feedback="title:required">An title is required.</div>
                         <div class="invalid-feedback" data-sb-feedback="title:email">Title is not valid.</div>
@@ -371,7 +365,7 @@
 
                     </br>
                     <!-- Submit Button-->
-                    <button class="btn btn-cancel" id="cancelButton" type="button" onclick="">취소</button>
+                    <button class="btn btn-cancel btn-outline-secondary" id="cancelButton" type="button" onclick="cancel_write()">취소</button>
                     <button class="btn btn-primary" type="button" onclick="save_write()">등록</button>
 
                 </form>
@@ -379,44 +373,47 @@
         </div>
     </div>
 </section>
-<!-- Footer-->
+<!-- Footer (수정X)-->
 <footer class="footer text-center">
     <div class="container">
         <div class="row">
-            <!-- Footer Location-->
+            <!-- Contact -->
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <h4 class="text-uppercase mb-4">CONTACT</h4>
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">CONTACT</h4>
                 <p class="lead mb-0">
                     info@petgenius.com
                     <br/>
-                    +82 - 2 - 000 - 0000
-                    <br/>
-                    Seoul, Republic of Korea
+                    +82 - 2 - 123 - 5678
                 </p>
             </div>
-            <!-- Footer Social Icons-->
+            <!-- Social Icons-->
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <h4 class="text-uppercase mb-4">Around the Web</h4>
-                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
-                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
-                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
-                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">Social Media</h4>
+                <p class="lead">KakaoTalk
+                    <a class="btn btn-outline-light btn-social mx-2" target="_blank"
+                       href="https://open.kakao.com/o/siarMh2e">
+                        <i class="fa-solid fa-comment"></i>
+                    </a>
+                </p>
             </div>
-            <!-- Footer About Text-->
+            <!-- About Text-->
             <div class="col-lg-4">
-                <h4 class="text-uppercase mb-4">About PET GENIUS</h4>
-                <p class="lead mb-0">
-                    무슨 말을 써야 하나...
-                    <a href="http://startbootstrap.com">(링크 삽입 가능)</a>
-
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">About PET GENIUS</h4>
+                <p class="mb-0">
+                    반려견을 키우고 있지만 쉽지 않은 나날들! <br>
+                    펫시터나 트레이너를 만나고 싶지만 어디서 만나야 할지 <br>
+                    어떤 정보를 봐야 할지 모르는 분들을 위한 커뮤니티 플랫폼
                 </p>
             </div>
         </div>
     </div>
 </footer>
-<!-- Copyright Section-->
+<!-- Copyright (수정X)-->
 <div class="copyright py-4 text-center text-white">
-    <div class="container"><small>Copyright &copy; PET GENIUS 2023</small></div>
+    <div class="container">
+        <small>Seoul, Republic of Korea</small><br>
+        <small>Copyright &copy; SWCampB03 2023</small>
+    </div>
 </div>
 </body>
 </html>

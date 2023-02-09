@@ -4576,6 +4576,7 @@ textarea.form-control-lg {
 }
 
 .card-title {
+  height: 50px;
   margin-bottom: 0.5rem;
 }
 
@@ -11465,7 +11466,6 @@ html {
 .portfolio .portfolio-item {
   cursor: pointer;
   position: relative;
-  display: block;
   max-width: 25rem;
   border-radius: 0.5rem;
   overflow: hidden;
