@@ -627,7 +627,11 @@ progress {
   font-size: 0.875em;
   color: #6c757d;
 }
+.new_container{
+  width:80%;
+  margin: 0 auto;
 
+}
 .container,
 .container-fluid,
 .container-xxl,
@@ -7340,6 +7344,7 @@ textarea.form-control-lg {
 
 .mt-2 {
   margin-top: 0.5rem !important;
+  margin: 0 auto;
 }
 
 .mt-3 {
@@ -11333,7 +11338,7 @@ html {
 }
 
 .page-section {
-  padding: 6rem 0;
+  padding: 3rem 0;
 }
 .page-section .page-section-heading {
   font-size: 2.25rem;
@@ -11342,7 +11347,7 @@ html {
 @media (min-width: 992px) {
   .page-section .page-section-heading {
     font-size: 3rem;
-    line-height: 2.5rem;
+    line-height: 2rem;
   }
 }
 

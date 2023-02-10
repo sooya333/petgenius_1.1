@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
 
     <meta charset="UTF-8">
@@ -215,12 +216,12 @@
 <header class="bg-primary">
     <img class="banner" src="/static/img/banner/banner_details.png" alt="펫지니어스 상세페이지"/>
 </header>
-
+</br>
 <!-- Input Section-->
 <section class="page-section" id="contact">
     <div class="container">
         <!-- Contact Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">상세페이지</h2>
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">게시글</h2>
         <!-- Icon Divider-->
         <div class="divider-custom">
             <div class="divider-custom-line"></div>
@@ -229,89 +230,107 @@
         </div>
         <!-- Contact Section Form-->
 
-
-        </br>
-        </br>
-        </br>
         </br>
         <!--        가져온 데이터가 붙는 곳 -->
-        <div id="detail_box" style="max-width: 800px;" class="container">
-            <img src="data:image/*;base64,{{ encoded_string }}"/>
-            <div>
+        <!--        <div id="detail_box" style="max-width: 800px;" class="container">-->
+        <div class="new_container" id="detail_box" style="max-width: 800px;">
+
+            <p style="text-align:left;">
                 {% if detail.category == "도와 주세요" %}
                 <span class="badge bg-danger">{{ detail.category }}</span>
                 {% else %}
                 <span class="badge bg-warning">{{ detail.category }}</span>
                 {% endif %}
+
                 {% if detail.role == "반려견 훈련사" %}
                 <span class="badge bg-primary">{{ detail.role }}</span>
                 {% else %}
                 <span class="badge bg-info">{{ detail.role }}</span>
                 {% endif %}
                 <span class="badge bg-dark">{{ detail.region }}</span>
-            </div>
-            </br>
-            </br>
-            <div class="mb-3">
-                <label for="Date" class="form-label">작성일</label>
-                <p class="form-datecontrol" id="Date">{{ detail.time }} </p>
-                <label for="name" class="form-label">작성자</label>
-                <p class="form-control" id="name">{{ detail.name }}</p>
-            </div>
-            </br>
-            <div class="test1">
-                <label for="title" class="form-label">제목</label>
-                <p class="form-control" id="title">{{ detail.title }}</p>
-                </br>
-                <label for="content" class="form-label">내용</label>
-                <p class="form-control" id="content" name="content">{{ detail.content }}</p>
+            </p>
 
+            <!--<label for="title" class="form-label"></label>-->
+            <p id="title" style="color: black; font-weight: bold; font-size: 30px; padding: 10px;">
+                {{ detail.title }}
+            </p>
+
+            <h6 style="text-align:right;">
+                작성자:&nbsp;{{ detail.name }}&nbsp;&nbsp;작성일:&nbsp;{{ detail.time }}
+            </h6>
+
+            <!--<label for="Date"></label>
+            <p class="" id="Date">{{ detail.time }} </p>
+            <label for="name">작성자:</label>
+            <p class="" id="name">{{ detail.name }}</p>-->
+
+
+            <div style="text-align: center;">
+                <img width="800px" src="data:image/*;base64,{{ encoded_string }}"/>
+
+            </div>
+            </br>
+            <div>
+                <!--            <label for="content" class="form-label">내용</label>-->
+                <p style="width: 800px; background-color: gainsboro; border-radius: 0.5em; padding: 3rem;" id="content"
+                   name="content">
+                    {{ detail.content }}</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--댓글 섹션 시작!-->
+
+    <section class="page-section container" id="comment_list" style="max-width: 800px;">
+        <h2 style="text-align: center">댓글</h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom" id="dividers">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- 댓글 주의사항 -->
+        <div class="p-3" style="background-color: lemonchiffon; border-radius: 0.5em; ">
+            <div>
+                <p style="font-weight: bold">💡 댓글 작성시 주의사항</p>
+                <small>소중한 개인정보 노출을 유의해 주세요! 연락이 필요하다면 개인 전화번호를 공유하기보다 카카오톡 ID를 남겨보세요.</small>
             </div>
         </div>
 
-        <section class="page-section container" id="comment_list" style="max-width: 800px;">
-            <!-- Icon Divider-->
-            <div class="divider-custom" id="dividers">
-                <div class="divider-custom-line"></div>
-                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                <div class="divider-custom-line"></div>
+        <!-- 댓글 입력창 -->
+        <form class="row">
+            <!-- Name input-->
+            <div class="form-floating col-sm-3 mx-auto mb-3">
+                <input type="text" class="form-control" placeholder="Enter name" id="c_name" required>
+                <label for="c_name">닉네임</label>
             </div>
-            <!-- 댓글 주의사항 -->
-            <div class="p-3" style="background-color: lemonchiffon; border-radius: 0.5em; ">
-                <div>
-                    <p style="font-weight: bold">💡 댓글 작성시 주의사항</p>
-                    <small>소중한 개인정보 노출을 유의해 주세요! 연락이 필요하다면 개인 전화번호를 공유하기보다 카카오톡 ID를 남겨보세요.</small>
-                </div>
+            <!-- comment input-->
+            <div class="form-floating col-sm-7 mx-auto mb-3">
+                <input type="text" class="form-control" placeholder="Enter comment" id="comment" required>
+                <label for="comment">댓글내용</label>
             </div>
-            <!-- 댓글 입력창 -->
-            <div class="mt-2 mb-4">
-                <form class="row">
-                    <!-- Name input-->
-                    <div class="form-floating col-sm-3 mx-auto mb-3">
-                        <input type="text" class="form-control" placeholder="Enter name" id="c_name" required>
-                        <label for="name">닉네임</label>
-                    </div>
-                    <!-- comment input-->
-                    <div class="form-floating col-sm-7 mx-auto mb-3">
-                        <input type="text" class="form-control" placeholder="Enter comment" id="comment" required>
-                        <label for="comment">댓글내용</label>
-                    </div>
-                    <!-- Submit Button-->
-                    <button class="btn btn-outline-primary mx-auto col-sm-1 mt-5" id="submitButton" type="submit"
-                            disabled="true" onclick="save_cmt()" style="height: 40px; width: 70px">등록
-                    </button>
-                </form>
-            </div>
-            <!-- 댓글 보여주기 // -->
-            <div class="container" style="max-width: 1000px;" id="cmt_box">
-            </div>
-            <br>
-            <button type='button' class="btn btn-primary" style="float: right"
-                    onclick="javascript : location.href='/#portfolio'">메인화면
-            </button>
-        </section>
 
-    </div>
+            <!-- Submit Button-->
+            <button class="btn btn-outline-primary mx-auto col-sm-1 mt-5" id="submitButton" type="submit"
+                    disabled="true" onclick="save_cmt()" style=" height: 40px; width: 70px">등록
+            </button>
+        </form>
+        </br>
+
+
+        <!--기존 댓글 보여주기 // -->
+        <div class="container" style="max-width: 1000px;" id="cmt_box">
+        </div>
+        <br>
+        <div>
+            <button type='button' class="btn btn-primary"
+                    onclick="javascript : location.href='/#portfolio'">메인화면으로 돌아가기
+            </button>
+        </div>
+    </section>
+
 
 </section>
 <!-- Footer (수정X)-->
