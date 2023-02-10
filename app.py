@@ -90,24 +90,24 @@ def detail_get():
         print("detail2의 디테일 인코디드 스트링 값없음")
     else:
         print("디테일, 인코디드 값 있음")
-    # # 게시글 댓글
-    # cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
-    # print(cmt_list) && cmt_list=cmt_list,
+    # 게시글 댓글내용
+    cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
+    print(cmt_list)
     # return jsonify({'detail': detail, 'encoded_string': encoded_string})
     # return jsonify({'detail': detail, 'encoded_string': encoded_string})
     # return render_template('detail.html', detail=detail)
-    return render_template('detail.html', detail=detail, encoded_string=encoded_string)
+    return render_template('detail.html', cmt_list=cmt_list, detail=detail, encoded_string=encoded_string)
     # return jsonify({'detail': detail})
 
 
-# 댓글 내용 가져오기
-@app.route('/comment', methods=['GET'])
-def comment_get():
-    num = request.args.get("b_num")
-    # print("b_num = " + num)
-    cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
-    print(cmt_list)
-    return jsonify({'cmt_list': cmt_list})
+# # 댓글 내용 가져오기
+# @app.route('/comment', methods=['GET'])
+# def comment_get():
+#     num = request.args.get("b_num")
+#     # print("b_num = " + num)
+#     cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
+#     print(cmt_list)
+#     return jsonify({'cmt_list': cmt_list})
 
 
 # 댓글 내용 저장하기
@@ -121,7 +121,7 @@ def comment_post():
         'b_num': b_num_receive,
         'name': name_receive,
         'comment': comment_receive,
-        'create_date': date_receive
+        'created_date': date_receive
     }
     db.comments.insert_one(doc)
     return jsonify({'msg': '댓글이 등록되었습니다!'})

@@ -29,43 +29,43 @@
         <!--페이지 열자마자 실행-->
         $(document).ready(function () {
             show_detail()
-            show_cmt()
+            // show_cmt()
             $('#c_name').on('input', processkey);
             $('#comment').on('input', processkey);
             processkey();
         });
 
-        // 기록된 댓글들 불러오는 함수
-        function show_cmt() {
-            let urlParams = new URLSearchParams(window.location.search);
-            let num = urlParams.get("num");
-            $.ajax({
-                type: "GET",
-                url: "/comment",
-                data: {'num': num},
-                success: function (response) {
-                    console.log(response['cmt_list'])
-                    let rows = response['cmt_list']
-                    for (let i = 0; i < rows.length; i++) {
-                        let name = rows[i]['name']
-                        let comment = rows[i]['comment']
-                        let datetime = rows[i]['created_date']
-                        console.log(datetime)
-
-                        let temp_html = `<div class="row bg-light mb-1">
-                                    <div class="p-3 col-sm-3" style="background-color: #778899;">
-                                        <span class="pt-5" style="color: white;">${name}</span>
-                                    </div>
-                                    <div class="p-3 col-sm-9">
-                                        <span>${comment}</span><br>
-                                        <small class="float-sm-end" style="color:lightgray;">${datetime}</small>
-                                    </div>
-                                </div>`
-                        $('#cmt_box').prepend(temp_html)
-                    }
-                }
-            })
-        }
+        // // 기록된 댓글들 불러오는 함수
+        // function show_cmt() {
+        //     let urlParams = new URLSearchParams(window.location.search);
+        //     let num = urlParams.get("num");
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "/comment",
+        //         data: {'num': num},
+        //         success: function (response) {
+        //             console.log(response['cmt_list'])
+        //             let rows = response['cmt_list']
+        //             for (let i = 0; i < rows.length; i++) {
+        //                 let name = rows[i]['name']
+        //                 let comment = rows[i]['comment']
+        //                 let datetime = rows[i]['created_date']
+        //                 console.log(datetime)
+        //
+        //                 let temp_html = `<div class="row bg-light mb-1">
+        //                             <div class="p-3 col-sm-3" style="background-color: #778899;">
+        //                                 <span class="pt-5" style="color: white;">${name}</span>
+        //                             </div>
+        //                             <div class="p-3 col-sm-9">
+        //                                 <span>${comment}</span><br>
+        //                                 <small class="float-sm-end" style="color:lightgray;">${datetime}</small>
+        //                             </div>
+        //                         </div>`
+        //                 $('#cmt_box').prepend(temp_html)
+        //             }
+        //         }
+        //     })
+        // }
 
         // 작성한&클릭한 글의 디테일을 db에서 가져와서 상세페이지에 붙여주는 펑션
         function show_detail() {
@@ -76,7 +76,7 @@
                 url: "/detail",
                 data: {'num': num},
                 success: function (response) {
-                    let detail = response.detail
+                    // let detail = response.detail
                     //
                     // let image = detail['image']
                     // let category = detail['category']
@@ -145,7 +145,7 @@
                 // alert(name, comment, b_num)
                 $.ajax({
                     type: "POST",
-                    url: "/detail", // *** 추후 게시글 num도 가져오기!!!! ****ㄴ
+                    url: "/detail", //
                     data: {b_num_give: b_num, name_give: name, comment_give: comment, date_give: today}, //저장된 닉네임과 댓글내용 넘기기
                     success: function (response) {
                         alert(response['msg']) //댓글이 등록되면 완료메세지 보내기
@@ -298,6 +298,7 @@
                 <small>소중한 개인정보 노출을 유의해 주세요! 연락이 필요하다면 개인 전화번호를 공유하기보다 카카오톡 ID를 남겨보세요.</small>
             </div>
         </div>
+        <br>
 
         <!-- 댓글 입력창 -->
         <form class="row">
@@ -311,18 +312,31 @@
                 <input type="text" class="form-control" placeholder="Enter comment" id="comment" required>
                 <label for="comment">댓글내용</label>
             </div>
-
             <!-- Submit Button-->
             <button class="btn btn-outline-primary mx-auto col-sm-1 mt-5" id="submitButton" type="submit"
                     disabled="true" onclick="save_cmt()" style=" height: 40px; width: 70px">등록
             </button>
         </form>
         </br>
-
-
-        <!--기존 댓글 보여주기 // -->
-        <div class="container" style="max-width: 1000px;" id="cmt_box">
+        <!-- 댓글 보여주기 -->
+        <div class="container" style="max-width: 800px;" id="cmt_box">
+            <div class="d-flex mb-2">
+                <small class="ms-auto" style="color: #778899;">총 {{ cmt_list|length }}개의 댓글</small>
+            </div>
+            {% for cmt in cmt_list | reverse %}
+            <div class="row bg-light mb-1">
+                <div class="p-3 col-sm-3" style="background-color: #778899;">
+                    <span class="pt-5" style="color: white;">{{ cmt.name }}</span>
+                </div>
+                <div class="p-3 col-sm-9">
+                    <span>{{ cmt.comment }}</span><br>
+                    <small class="float-sm-end" style="color:lightgray;">{{ cmt.created_date }} {{
+                        cmt.create_date}}</small>
+                </div>
+            </div>
+            {% endfor %}
         </div>
+
         <br>
         <div>
             <button type='button' class="btn btn-primary"
