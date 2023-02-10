@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Pet Genius</title>
-    <!-- Favicon(수정X) -->
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Pet Genius 상세보기</title>
+    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico"/>
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -12,134 +15,161 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
           type="text/css"/>
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/static/css/styles.css" rel="stylesheet"/>
-    <!-- 스크립트 부분(수정X) -->
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jquery import -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="/static/js/scripts.js"></script>
-    <script src="/static/js/comment.js"></script>
-    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-    <!-- * *                               SB Forms JS                               * *-->
-    <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-    <!--    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>-->
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../static/css/styles.css" rel="stylesheet"/>
+    <!--    <script src="/static/js/scripts.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!--    <title>Title</title>-->
     <style>
-    </style>
-</head>
-<body id="page-top">
-<!-- 네비게이션(수정X) href 변경-->
-<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand" href="#page-top">Pet Genius</a>
-        <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            Menu
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1">
-                    <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">게시판</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1">
-                    <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">글 작성하기</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<!-- 이미지 배너(수정X) -->
-<header class="bg-primary">
-    <img class="banner" src="/static/img/banner/banner_details.png" alt="..."/>
-</header>
+        . title {
+            font-size: 10px;
+        }
 
-<!-- 여기에 각자가 맡은 Section 넣기 -->
-<!-- 댓글 section -->
+        .form-datecontrol {
+            font-size: 13px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .form-control {
+            font-size: 15px;
+        }
+
+        .form-label {
+            font-size: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        <!--페이지 열자마자 실행-->
+        $(document).ready(function () {
+            let urlParams = new URLSearchParams(window.location.search);
+            let num = urlParams.get("num");
+            $('#c_name').on('input', processkey);
+            $('#comment').on('input', processkey);
+            processkey();
+            show_cmt(num)
+        });
+
+        function show_cmt(num) {
+            console.log("show_cmt 실행" + num)
+            $.ajax({
+                type: "GET",
+                url: "/comments",
+                data: {"num": num},
+                success: function (response) {
+                    // console.log(response['cmt_list'])
+                    // let rows = response['cmt_list']
+                    // for (let i = 0; i < rows.length; i++) {
+                    //     let name = rows[i]['name']
+                    //     let comment = rows[i]['comment']
+                    //     let datetime = rows[i]['created_date']
+                    //     console.log(datetime)
+                    //
+                    //     let temp_html = `<div class="row bg-light mb-1">
+                    //                 <div class="p-3 col-sm-3" style="background-color: #778899;">
+                    //                     <span class="pt-5" style="color: white;">${name}</span>
+                    //                 </div>
+                    //                 <div class="p-3 col-sm-9">
+                    //                     <span>${comment}</span><br>
+                    //                     <small class="float-sm-end" style="color:lightgray;">${datetime}</small>
+                    //                 </div>
+                    //             </div>`
+                    //     $('#cmt_box').prepend(temp_html)
+                    // }
+                }
+            })
+        }
+
+
+        //댓글 part : 닉네임 + 내용 모두 작성할 경우에만 save 버튼 클릭
+        function processkey() {
+            if ($('#c_name').val() == '' || $('#comment').val() == '') {
+                $('#submitButton').attr("disabled", true);
+            } else {
+                $('#submitButton').attr("disabled", false);
+            }
+        }
+
+        // 댓글 등록하기
+        function save_cmt() {
+            let urlParams = new URLSearchParams(window.location.search);
+            let num = urlParams.get("num");
+            let name = $('#c_name').val();
+            let comment = $('#comment').val()
+
+            let today = new Date()
+            let date = today.toLocaleDateString()
+            let time = today.toLocaleTimeString('en-GB', {hourCycle: 'h23'})
+            today = date + " " + time
+            console.log(num, name, comment, today)
+            let value = confirm('댓글을 등록하시겠습니까? 등록 시, 수정&삭제가 어렵습니다.');
+            if (value == true) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/comments", //
+                    data: {b_num_give: num, name_give: name, comment_give: comment, date_give: today}, //저장된 닉네임과 댓글내용 넘기기
+
+                    success: function (response) {
+                        alert(response['msg']) //댓글이 등록되면 완료메세지 보내기
+
+                        // show_cmt(num)
+                        window.location.reload() //댓글 등록 후 새로고침 시행
+                        // location.href = "/detail?num=" + b_num + "#dividers"
+                    }
+                })
+            } else if (value == false){
+                // window.history.back()
+                window.location.reload()
+                return;
+            }
+
+        }
+    </script>
+</head>
+<body>
+<!-- 댓글 입력창 -->
 <section class="page-section container" id="comment_list" style="max-width: 800px;">
-    <!-- Icon Divider-->
-    <div class="divider-custom" id="dividers">
-        <div class="divider-custom-line"></div>
-        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-        <div class="divider-custom-line"></div>
-    </div>
-    <!-- 댓글 주의사항 -->
-    <div class="p-3" style="background-color: lemonchiffon; border-radius: 0.5em; ">
-        <div>
-            <p style="font-weight: bold">💡 댓글 작성시 주의사항</p>
-            <small>소중한 개인정보 노출을 유의해 주세요! 연락이 필요하다면 개인 전화번호를 공유하기보다 카카오톡 ID를 남겨보세요.</small>
+    <form class="row">
+        <!-- Name input-->
+        <div class="form-floating col-sm-3 mx-auto mb-3">
+            <input type="text" class="form-control" placeholder="Enter name" id="c_name" required>
+            <label for="c_name">닉네임</label>
         </div>
-    </div>
-    <!-- 댓글 입력창 -->
-    <div class="mt-2 mb-4">
-        <form class="row" >
-            <!-- Name input-->
-            <div class="form-floating col-sm-3 mx-auto mb-3">
-                <input type="text" class="form-control" placeholder="Enter name" id="name" required>
-                <label for="name">닉네임</label>
-            </div>
-            <!-- comment input-->
-            <div class="form-floating col-sm-7 mx-auto mb-3">
-                <input type="text" class="form-control" placeholder="Enter comment" id="comment" required>
-                <label for="comment">댓글내용</label>
-            </div>
+        <!-- comment input-->
+        <div class="form-floating col-sm-7 mx-auto mb-3">
+            <input type="text" class="form-control" placeholder="Enter comment" id="comment" required>
+            <label for="comment">댓글내용</label>
+        </div>
         <!-- Submit Button-->
-            <button class="btn btn-outline-primary mx-auto col-sm-1 mt-5" id="submitButton" type="submit"
-                    disabled="true" onclick="save_cmt()" style="height: 40px; width: 70px">등록
-            </button>
-        </form>
-    </div>
-    <!-- 댓글 보여주기 // -->
-    <div class="container" style="max-width: 1000px;" id="cmt_box">
+        <button class="btn btn-outline-primary mx-auto col-sm-1 mt-5" id="submitButton" type="submit"
+                disabled="true" onclick="save_cmt()" style=" height: 40px; width: 70px">등록
+        </button>
+    </form>
+    </br>
+    <!-- 댓글 보여주기 -->
+    <div class="container" style="max-width: 800px;" id="cmt_box">
+        <div class="d-flex mb-2">
+            <small class="ms-auto" style="color: #778899;">총 {{ cmt_list|length }}개의 댓글</small>
+        </div>
+        {% for cmt in cmt_list | reverse %}
+        <div class="row bg-light mb-1">
+            <div class="p-3 col-sm-3" style="background-color: #778899;">
+                <span class="pt-5" style="color: white;">{{ cmt.name }}</span>
+            </div>
+            <div class="p-3 col-sm-9">
+                <span>{{ cmt.comment }}</span><br>
+                <small class="float-sm-end" style="color:lightgray;">{{ cmt.created_date }} {{
+                    cmt.create_date}}</small>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </section>
-
-<!---------------------------------------------------->
-<!-- Footer (수정X)-->
-<footer class="footer text-center">
-    <div class="container">
-        <div class="row">
-            <!-- Contact -->
-            <div class="col-lg-4 mb-5 mb-lg-0">
-                <h4 class="text-uppercase mb-4" style="color: lightslategray">CONTACT</h4>
-                <p class="lead mb-0">
-                    info@petgenius.com
-                    <br/>
-                    +82 - 2 - 123 - 5678
-                </p>
-            </div>
-            <!-- Social Icons-->
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <h4 class="text-uppercase mb-4" style="color: lightslategray">Social Media</h4>
-                <p class="lead">KakaoTalk
-                    <a class="btn btn-outline-light btn-social mx-2" target="_blank"
-                       href="https://open.kakao.com/o/siarMh2e">
-                        <i class="fa-solid fa-comment"></i>
-                    </a>
-                </p>
-            </div>
-            <!-- About Text-->
-            <div class="col-lg-4">
-                <h4 class="text-uppercase mb-4" style="color: lightslategray">About PET GENIUS</h4>
-                <p class="mb-0">
-                    반려견을 키우고 있지만 쉽지 않은 나날들! <br>
-                    펫시터나 트레이너를 만나고 싶지만 어디서 만나야 할지 <br>
-                    어떤 정보를 봐야 할지 모르는 분들을 위한 커뮤니티 플랫폼
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- Copyright (수정X)-->
-<div class="copyright py-4 text-center text-white">
-    <div class="container">
-        <small>Seoul, Republic of Korea</small><br>
-        <small>Copyright &copy; SWCampB03 2023</small>
-    </div>
-</div>
 </body>
 </html>

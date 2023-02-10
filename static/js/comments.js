@@ -1,6 +1,7 @@
 
 $(document).ready(function(){
-    show_cmt()
+
+    show_cmt(num)
     processkey();
 });
 
@@ -17,13 +18,13 @@ function processkey() {
 
 // 기록된 댓글들 불러오는 함수
 //채원님 detail 페이지에서 값 가져오기(합치기)
-function show_cmt(){
+function show_cmt(num){
     //$('#names-q1').empty()
     $.ajax({
         type: "GET",
-        url: "/comment",
-        data: {},
-        success: function (response) {
+        url: "/comments",
+        data: {'num':num},
+            success: function (response) {
             console.log(response['cmt_list'])
             let rows = response['cmt_list']
             for (let i = 0; i<rows.length; i++) {

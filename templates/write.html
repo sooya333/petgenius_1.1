@@ -48,6 +48,7 @@
         function save_write() {
             // 브라우저에 입력된 값 가져오기
             let category = $('#category').val()
+             console.log(typeof category)
             let role = $('#role').val()
             let region = $('#region').val()
             let name = $('#name').val()
@@ -55,8 +56,18 @@
             let content = $('#content').val()
             //파일 자체를 받아와서 서버에 보내기
             let file = $('#file')[0].files[0]
-            if (category == null || role == null || region == null || name == null || title == null || content == null || file == null) {
-                alert("모든 항목을 채워 주셔야 글이 등록됩니다.")
+
+            // console.log(typeof role)
+            // console.log(typeof region)
+            // console.log(typeof name)
+            // console.log(typeof title)
+            // console.log(typeof content)
+            // console.log(typeof file)
+
+
+
+            if (!category || !role || !region || !name || !title || !content || !file) {
+                alert("모든 항목을 채워 주셔야 글이 등록됩니다.");
             }
 
             // 글쓴 날짜 시간 저장
@@ -122,6 +133,7 @@
                 return;
             }
         }
+
         // function show_comment() {
         //     $.ajax({
         //         type: "GET",
@@ -161,7 +173,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/#portfolio">게시판</a>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                                                     href="/#portfolio">게시판</a>
                 </li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                                                      href="#contact">글 작성하기</a></li>
@@ -323,7 +336,7 @@
                     <!-- Title input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" id="title" type="text" placeholder="Enter your title here..."
-                              maxlength="30" data-sb-validations="required,email"/>
+                               maxlength="30" data-sb-validations="required,email"/>
                         <label for="title">제목</label>
                         <div class="invalid-feedback" data-sb-feedback="title:required">An title is required.</div>
                         <div class="invalid-feedback" data-sb-feedback="title:email">Title is not valid.</div>
@@ -371,7 +384,9 @@
 
                     </br>
                     <!-- Submit Button-->
-                    <button class="btn btn-cancel btn-outline-secondary" id="cancelButton" type="button" onclick="cancel_write()">취소</button>
+                    <button class="btn btn-cancel btn-outline-secondary" id="cancelButton" type="button"
+                            onclick="cancel_write()">취소
+                    </button>
                     <button class="btn btn-primary" type="button" onclick="save_write()">등록</button>
 
                 </form>
