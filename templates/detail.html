@@ -238,9 +238,17 @@
         <div id="detail_box" style="max-width: 800px;" class="container">
             <img src="data:image/*;base64,{{ encoded_string }}"/>
             <div>
-                <span class="badge bg-primary">{{ detail.category }}</span>
-                <span class="badge bg-success">{{ detail.role }}</span>
-                <span class="badge bg-warning">{{ detail.region }}</span>
+                {% if detail.category == "도와 주세요" %}
+                <span class="badge bg-danger">{{ detail.category }}</span>
+                {% else %}
+                <span class="badge bg-warning">{{ detail.category }}</span>
+                {% endif %}
+                {% if detail.role == "반려견 훈련사" %}
+                <span class="badge bg-primary">{{ detail.role }}</span>
+                {% else %}
+                <span class="badge bg-info">{{ detail.role }}</span>
+                {% endif %}
+                <span class="badge bg-dark">{{ detail.region }}</span>
             </div>
             </br>
             </br>
