@@ -48,17 +48,17 @@
         function click_Temp() {
             flag += 9; // 출력할 카드의 수 9 증가
             loof()
-            showCards();// 카드 출력
+            // showCards()
         }
 
-        // 카드 출력 함수
-        function showCards() {
-            let cards = $("#cards-box .card");
-            // cards.hide(); // 모든 카드 숨김
-            for (let i = 0; i < cardLimit; i++) {
-                $(cards[i]).show(); // 출력할 카드만 표시
-            }
-        }
+        // // 카드 출력 함수
+        // function showCards() {
+        //     let cards = $("#cards-box .card");
+        //     // cards.hide(); // 모든 카드 숨김
+        //     for (let i = 0; i < cardLimit; i++) {
+        //         $(cards[i]).show(); // 출력할 카드만 표시
+        //     }
+        // }
 
         let details
         let img_string_list
@@ -348,7 +348,7 @@
     <div class="container">
         <div class="row">
             <!-- Contact -->
-            <div class="col-lg-4 mb-5 mb-lg-0">
+            <div class="col-lg-4">
                 <h4 class="text-uppercase mb-4" style="color: lightslategray">CONTACT</h4>
                 <p class="lead mb-0">
                     info@petgenius.com
@@ -357,7 +357,7 @@
                 </p>
             </div>
             <!-- Social Icons-->
-            <div class="col-lg-4 mb-5 mb-lg-0">
+            <div class="col-lg-4">
                 <h4 class="text-uppercase mb-4" style="color: lightslategray">Social Media</h4>
                 <p class="lead">KakaoTalk
                     <a class="btn btn-outline-light btn-social mx-2" target="_blank"

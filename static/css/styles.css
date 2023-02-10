@@ -7393,6 +7393,7 @@ textarea.form-control-lg {
 
 .mb-0 {
   margin-bottom: 0 !important;
+  padding-bottom: 20px;
 }
 
 .mb-1 {
