@@ -24,11 +24,18 @@
 
     <script>
 
+        // 페이지 로딩 시 url 내 파라미터를 확인하여 해당 category seleted
+        $(document).ready(function () {
+            let urlParams = new URLSearchParams(window.location.search);
+            let category = urlParams.get("category");
+            if(category == '') {
+                return
+            } else {
+                $('#category').val(category).prop('selected', true);
+                $('#category').css("font-weight", "bold"); // 구분 bold처리
+            }
+        });
 
-        // 페이지 로딩 시 자동 실행
-        // $(document).ready(function () {
-        //     // alert("welcome!")
-        // });
 
         // // 방금 등록한 글 상세페이지 보여주는 펑션 - 아직 구현 전
         // 방금 등록한 글 번호 num을 서버로 넘겨 줌. 서버에서 해당 글 내용을 가져와서 response 하면, 디테일 페이지에 붙여 줘야 함.

@@ -24,6 +24,13 @@
     <script>
         $(document).ready(function () {
             get_board();
+            // 배너버튼 클릭 시, category 선정되어 url 넘어감
+            $('.banner_btn').on('click',(e) => {
+                let value = e.target.value;
+                let ref = '/write?category='
+                let url = location.href = ref.concat(value);
+            })
+
         });
 
         function show_detail(num) {
@@ -179,12 +186,11 @@
                 </div>
                 <div class="carousel-item"> <!-- 이미지2 -->
                     <img class="banner" src="/static/img/banner/banner_main2.png" alt="도와주세요 이미지" class="d-block"/>
-                    <button onclick="write_page()" class="btn btn-light btn-sm banner_btn" id="b_btn1" data-value="도와 주세요" >도움요청하러가기</button>
+                    <button class="btn btn-light btn-sm banner_btn" id="b_btn1" value="도와 주세요" >도움요청하러가기</button>
                 </div>
                 <div class="carousel-item"> <!-- 이미지3 -->
                     <img class="banner" src="/static/img/banner/banner_main3.png" alt="도와드려요 이미지" class="d-block"/>
-                    <button onclick="write_page()" class="btn btn-light btn-sm banner_btn" id="b_btn2" data-value="도와 드려요">프로필 올리러가기</button>
-                    <!--id="b_btn2" data-value="도와 드려요"-->
+                    <button class="btn btn-light btn-sm banner_btn" id="b_btn2" value="도와 드려요">프로필 올리러가기</button>
                 </div>
             </div>
 
@@ -340,8 +346,6 @@
         </div>
     </div>
 </section>
-
-
 <!---------------------------------------------------->
 <!-- Footer (수정X)-->
 <footer class="footer text-center">
