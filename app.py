@@ -103,8 +103,15 @@ def detail_get():
 @app.route('/comments', methods=['GET'])
 def comment_get():
     num = request.args.get("num")
-    print("Get Comments: num = " + num)
-    cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
+    if num is not None:
+        print("Get Comments: num = " + num)
+        cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
+
+    else:
+        print("num is None")
+        cmt_list = []
+
+
     return render_template('comments.html', cmt_list=cmt_list)
 
 
