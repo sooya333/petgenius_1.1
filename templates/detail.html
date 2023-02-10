@@ -6,18 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>게시판 상세입니다.</title>
+    <title>Pet Genius 상세보기</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico"/>
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
           type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../static/css/styles.css" rel="stylesheet"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/static/js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
@@ -27,7 +28,43 @@
         <!--페이지 열자마자 실행-->
         $(document).ready(function () {
             show_detail()
+            show_cmt()
+            $('#c_name').on('input', processkey);
+            $('#comment').on('input', processkey);
+            processkey();
         });
+
+        // 기록된 댓글들 불러오는 함수
+        function show_cmt() {
+            let urlParams = new URLSearchParams(window.location.search);
+            let num = urlParams.get("num");
+            $.ajax({
+                type: "GET",
+                url: "/comment",
+                data: {'num': num},
+                success: function (response) {
+                    console.log(response['cmt_list'])
+                    let rows = response['cmt_list']
+                    for (let i = 0; i < rows.length; i++) {
+                        let name = rows[i]['name']
+                        let comment = rows[i]['comment']
+                        let datetime = rows[i]['created_date']
+                        console.log(datetime)
+
+                        let temp_html = `<div class="row bg-light mb-1">
+                                    <div class="p-3 col-sm-3" style="background-color: #778899;">
+                                        <span class="pt-5" style="color: white;">${name}</span>
+                                    </div>
+                                    <div class="p-3 col-sm-9">
+                                        <span>${comment}</span><br>
+                                        <small class="float-sm-end" style="color:lightgray;">${datetime}</small>
+                                    </div>
+                                </div>`
+                        $('#cmt_box').prepend(temp_html)
+                    }
+                }
+            })
+        }
 
         // 작성한&클릭한 글의 디테일을 db에서 가져와서 상세페이지에 붙여주는 펑션
         function show_detail() {
@@ -38,7 +75,7 @@
                 url: "/detail",
                 data: {'num': num},
                 success: function (response) {
-                    // let detail = response['detail']
+                    let detail = response.detail
                     //
                     // let image = detail['image']
                     // let category = detail['category']
@@ -81,6 +118,45 @@
             })
         }
 
+        //댓글 part : 닉네임 + 내용 모두 작성할 경우에만 save 버튼 클릭
+        function processkey() {
+            if ($('#c_name').val() == '' || $('#comment').val() == '') {
+                $('#submitButton').attr("disabled", true);
+            } else {
+                $('#submitButton').attr("disabled", false);
+            }
+        }
+
+        // 댓글 등록하기
+        function save_cmt() {
+            let urlParams = new URLSearchParams(window.location.search);
+            let b_num = urlParams.get("num");
+            let name = $('#c_name').val();
+            let comment = $('#comment').val()
+
+            let today = new Date()
+            let date = today.toLocaleDateString()
+            let time = today.toLocaleTimeString('en-GB', {hourCycle: 'h23'})
+            today = date + " " + time
+            console.log(b_num, name, comment, today)
+            let value = confirm('댓글을 등록하시겠습니까? 등록 시, 수정&삭제가 어렵습니다.');
+            if (value == true) {
+                // alert(name, comment, b_num)
+                $.ajax({
+                    type: "POST",
+                    url: "/detail", // *** 추후 게시글 num도 가져오기!!!! ****ㄴ
+                    data: {b_num_give: b_num, name_give: name, comment_give: comment, date_give: today}, //저장된 닉네임과 댓글내용 넘기기
+                    success: function (response) {
+                        alert(response['msg']) //댓글이 등록되면 완료메세지 보내기
+                        window.location.reload() //댓글 등록 후 새로고침 시행
+                        // location.href = "/detail?num=" + b_num + "#dividers"
+                    }
+                })
+            } else if (value == false) {
+                return;
+            }
+        }
+
     </script>
 
     <style>
@@ -112,12 +188,10 @@
 </head>
 
 <body>
-
-
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="index.html">PET GENIUS</a>
+        <a class="navbar-brand" href="/">PET GENIUS</a>
         <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -126,39 +200,22 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">게시판</a>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                                                     href="/#portfolio">게시판</a>
                 </li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
-                                                     href="#contact">글 작성하기</a></li>
+                                                     href="/write">글 작성하기</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Masthead-->
+<!-- 이미지배너-->
 
-<header class="masthead bg-primary text-white text-center">
-    <div class="container d-flex align-items-center flex-column">
-        <!-- Masthead Avatar Image-->
-        <!--        <img class="masthead-avatar mb-5" src="highfive.jpg" alt="..."/>-->
-        <!-- Masthead Heading-->
-        <h1 class="masthead-heading text-uppercase mb-0">PET GENIUS</h1>
-        <!-- Icon Divider-->
-        <div class="divider-custom divider-light">
-            <div class="divider-custom-line"></div>
-            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-            <div class="divider-custom-line"></div>
-        </div>
-        <!-- Masthead Subheading-->
-        <p class="masthead-subheading font-weight-light mb-0"> 반려견 키우기 생각만큼 쉽지 않다고요? <br/> 특별한 댕댕이의 특별한 보호자가 되기 위해 <br/>
-            펫지니어스를 만나 보시겠습니까?</p>
-    </div>
+<header class="bg-primary">
+    <img class="banner" src="/static/img/banner/banner_details.png" alt="펫지니어스 상세페이지"/>
 </header>
 
-<section>
-
-
-</section>
 <!-- Input Section-->
 <section class="page-section" id="contact">
     <div class="container">
@@ -202,10 +259,6 @@
                 <p class="form-control" id="content" name="content">{{ detail.content }}</p>
 
             </div>
-            </br>
-            <button type='button' class="btn btn-success"
-                    onclick="javascript : location.href='index.html'">메인화면
-            </button>
         </div>
 
         <section class="page-section container" id="comment_list" style="max-width: 800px;">
@@ -244,55 +297,56 @@
             <!-- 댓글 보여주기 // -->
             <div class="container" style="max-width: 1000px;" id="cmt_box">
             </div>
+            <br>
+            <button type='button' class="btn btn-primary" style="float: right"
+                    onclick="javascript : location.href='/#portfolio'">메인화면
+            </button>
         </section>
 
-
-        </br>
-
     </div>
 
-    <!--    <script src="/js/lib/jquery.min.js"></script>-->
-    <!--    <script src="/js/lib/boorstrap.min.js"></script>-->
-    </div>
 </section>
-<!-- Footer-->
+<!-- Footer (수정X)-->
 <footer class="footer text-center">
     <div class="container">
         <div class="row">
-            <!-- Footer Location-->
+            <!-- Contact -->
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <h4 class="text-uppercase mb-4">CONTACT</h4>
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">CONTACT</h4>
                 <p class="lead mb-0">
                     info@petgenius.com
                     <br/>
-                    +82 - 2 - 000 - 0000
-                    <br/>
-                    Seoul, Republic of Korea
+                    +82 - 2 - 123 - 5678
                 </p>
             </div>
-            <!-- Footer Social Icons-->
+            <!-- Social Icons-->
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <h4 class="text-uppercase mb-4">Around the Web</h4>
-                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
-                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
-                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
-                <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">Social Media</h4>
+                <p class="lead">KakaoTalk
+                    <a class="btn btn-outline-light btn-social mx-2" target="_blank"
+                       href="https://open.kakao.com/o/siarMh2e">
+                        <i class="fa-solid fa-comment"></i>
+                    </a>
+                </p>
             </div>
-            <!-- Footer About Text-->
+            <!-- About Text-->
             <div class="col-lg-4">
-                <h4 class="text-uppercase mb-4">About PET GENIUS</h4>
-                <p class="lead mb-0">
-                    무슨 말을 써야 하나...
-                    <a href="http://startbootstrap.com">(링크 삽입 가능)</a>
-
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">About PET GENIUS</h4>
+                <p class="mb-0">
+                    반려견을 키우고 있지만 쉽지 않은 나날들! <br>
+                    펫시터나 트레이너를 만나고 싶지만 어디서 만나야 할지 <br>
+                    어떤 정보를 봐야 할지 모르는 분들을 위한 커뮤니티 플랫폼
                 </p>
             </div>
         </div>
     </div>
 </footer>
-<!-- Copyright Section-->
+<!-- Copyright (수정X)-->
 <div class="copyright py-4 text-center text-white">
-    <div class="container"><small>Copyright &copy; PET GENIUS 2023</small></div>
+    <div class="container">
+        <small>Seoul, Republic of Korea</small><br>
+        <small>Copyright &copy; SWCampB03 2023</small>
+    </div>
 </div>
 
 </body>

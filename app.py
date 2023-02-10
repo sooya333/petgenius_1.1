@@ -85,19 +85,18 @@ def detail_get():
     # print(detail)
     # 게시글 이미지
     img_binary = db.g_imgs.find_one({'num': num}, {'_id': False})
-    img_string = base64.b64encode(img_binary['img']).decode("utf-8")
-    if detail == '' or img_string == '':
+    encoded_string = base64.b64encode(img_binary['img']).decode("utf-8")
+    if detail == '' or encoded_string == '':
         print("detail2의 디테일 인코디드 스트링 값없음")
     else:
         print("디테일, 인코디드 값 있음")
-
     # # 게시글 댓글
     # cmt_list = list(db.comments.find({'b_num': num}, {'_id': False}))
     # print(cmt_list) && cmt_list=cmt_list,
     # return jsonify({'detail': detail, 'encoded_string': encoded_string})
     # return jsonify({'detail': detail, 'encoded_string': encoded_string})
-    return render_template('detail.html', detail=detail, img_string=img_string)
-    # return render_template('detail.html', data)
+    # return render_template('detail.html', detail=detail)
+    return render_template('detail.html', detail=detail, encoded_string=encoded_string)
     # return jsonify({'detail': detail})
 
 
