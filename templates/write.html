@@ -28,7 +28,7 @@
         $(document).ready(function () {
             let urlParams = new URLSearchParams(window.location.search);
             let category = urlParams.get("category");
-            if(category == '') {
+            if (category == '') {
                 return
             } else {
                 $('#category').val(category).prop('selected', true);
@@ -48,7 +48,7 @@
         function save_write() {
             // 브라우저에 입력된 값 가져오기
             let category = $('#category').val()
-             console.log(typeof category)
+            console.log(typeof category)
             let role = $('#role').val()
             let region = $('#region').val()
             let name = $('#name').val()
@@ -65,63 +65,63 @@
             // console.log(typeof file)
 
 
-
             if (!category || !role || !region || !name || !title || !content || !file) {
                 alert("모든 항목을 채워 주셔야 글이 등록됩니다.");
+            } else { // 글쓴 날짜 시간 저장
+                let date = new Date();
+                let year = date.getFullYear();
+                let month = ('0' + (date.getMonth() + 1)).slice(-2);
+                let day = ('0' + date.getDate()).slice(-2);
+                let hours = ('0' + date.getHours()).slice(-2);
+                let minutes = ('0' + date.getMinutes()).slice(-2);
+                let seconds = ('0' + date.getSeconds()).slice(-2);
+                let timestr = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+
+                // console.log(file)
+                let formData = new FormData()
+                formData.append('file', file);
+                formData.append('category', category);
+                formData.append('role', role);
+                formData.append('region', region);
+                formData.append('name', name);
+                formData.append('title', title);
+                formData.append('content', content);
+                formData.append('time', timestr);
+
+                // 글 개수 가져 와서 +1 하여 다음 글 넘버 매겨 주기
+                $.ajax({
+                    type: "GET",
+                    url: "/board",
+                    data: {},
+                    success: function (response) {
+                        let rows = response['details']
+                        // alert(rows[0]['name'])
+                        let num = Object.keys(rows).length + 1
+                        // alert(num + category + role + region + name + title + content + file)
+
+
+                        formData.append('num', num);
+
+
+                        // ajax 이용해 POST 타입으로 서버에 보내기
+                        $.ajax({
+                            type: 'POST',
+                            url: '/write',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                alert(response['msg'])
+                                // 방금 등록한 글의 상세 페이지 보여줘야지
+                                console.log('방금 저장된 글번호:' + num)
+                                show_detail(num)
+                            }
+                        });
+                    }
+                })
+
             }
 
-            // 글쓴 날짜 시간 저장
-            let date = new Date();
-            let year = date.getFullYear();
-            let month = ('0' + (date.getMonth() + 1)).slice(-2);
-            let day = ('0' + date.getDate()).slice(-2);
-            let hours = ('0' + date.getHours()).slice(-2);
-            let minutes = ('0' + date.getMinutes()).slice(-2);
-            let seconds = ('0' + date.getSeconds()).slice(-2);
-            let timestr = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
-
-            // console.log(file)
-            let formData = new FormData()
-            formData.append('file', file);
-            formData.append('category', category);
-            formData.append('role', role);
-            formData.append('region', region);
-            formData.append('name', name);
-            formData.append('title', title);
-            formData.append('content', content);
-            formData.append('time', timestr);
-
-            // 글 개수 가져 와서 +1 하여 다음 글 넘버 매겨 주기
-            $.ajax({
-                type: "GET",
-                url: "/board",
-                data: {},
-                success: function (response) {
-                    let rows = response['details']
-                    // alert(rows[0]['name'])
-                    let num = Object.keys(rows).length + 1
-                    // alert(num + category + role + region + name + title + content + file)
-
-
-                    formData.append('num', num);
-
-
-                    // ajax 이용해 POST 타입으로 서버에 보내기
-                    $.ajax({
-                        type: 'POST',
-                        url: '/write',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: function (response) {
-                            alert(response['msg'])
-                            // 방금 등록한 글의 상세 페이지 보여줘야지
-                            console.log('방금 저장된 글번호:' + num)
-                            show_detail(num)
-                        }
-                    });
-                }
-            })
 
         }
 
