@@ -115,7 +115,7 @@
         </br>
 
         <!--        가져온 데이터가 붙는 곳 -->
-        <div class="new_container" id="detail_box" style="max-width: 800px;">
+        <div class="new_container" id="detail_box" style="max-width: 100%;">
 
             <p style="text-align:left;">
                 {% if detail.category == "도와 주세요" %}
@@ -141,13 +141,13 @@
                 작성자:&nbsp;{{ detail.name }}&nbsp;&nbsp;작성일:&nbsp;{{ detail.time }}
             </h6>
             <div style="text-align: center;">
-                <img width="800px" src="data:image/*;base64,{{ img_string }}"/>
+                <img width="100%" src="data:image/*;base64,{{ img_string }}"/>
 
             </div>
             </br>
             <div>
                 <!--            <label for="content" class="form-label">내용</label>-->
-                <p style="width: 800px; background-color: gainsboro; border-radius: 0.5em; padding: 3rem;" id="content"
+                <p style="width: 100%; background-color: gainsboro; border-radius: 0.5em; padding: 3rem;" id="content"
                    name="content">
                     {{ detail.content }}</p>
             </div>
@@ -158,7 +158,7 @@
     <!--댓글 섹션 시작!-->
 
 
-    <section class="page-section container" id="comment_list" style="max-width: 800px;">
+    <section class="page-section container" id="comment_list" style="max-width: 80%;">
         <h2 style="text-align: center">댓글</h2>
         <!-- Icon Divider-->
         <div class="divider-custom" id="dividers">
@@ -177,7 +177,7 @@
         <br>
 
         <!--        comments.html  -->
-        <iframe src="http://localhost:5000/comments?num={{ detail.num }}" width="850px" height="800px"></iframe>
+        <iframe src="http://localhost:5000/comments?num={{ detail.num }}" width="100%" height="800px"></iframe>
 
         <br/>
         <div>
@@ -194,7 +194,7 @@
     <div class="container">
         <div class="row">
             <!-- Contact -->
-            <div class="col-lg-4 mb-5 mb-lg-0">
+            <div class="col-lg-4">
                 <h4 class="text-uppercase mb-4" style="color: lightslategray">CONTACT</h4>
                 <p class="lead mb-0">
                     info@petgenius.com
@@ -203,7 +203,7 @@
                 </p>
             </div>
             <!-- Social Icons-->
-            <div class="col-lg-4 mb-5 mb-lg-0">
+            <div class="col-lg-4">
                 <h4 class="text-uppercase mb-4" style="color: lightslategray">Social Media</h4>
                 <p class="lead">KakaoTalk
                     <a class="btn btn-outline-light btn-social mx-2" target="_blank"
