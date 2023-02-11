@@ -43,6 +43,10 @@
             margin-top: 10px;
             font-weight: bold;
         }
+        #btn_main, #caution {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 
     <script>
@@ -138,7 +142,8 @@
             </p>
 
             <h6 style="text-align:right;">
-                작성자:&nbsp;{{ detail.name }}&nbsp;&nbsp;작성일:&nbsp;{{ detail.time }}
+                <span class="material-symbols-outlined">
+                작성자: {{ detail.name }} </span>&nbsp;&nbsp;작성일:&nbsp;{{ detail.time }}
             </h6>
             <div style="text-align: center;">
                 <img width="100%" src="data:image/*;base64,{{ img_string }}"/>
@@ -158,8 +163,8 @@
     <!--댓글 섹션 시작!-->
 
 
-    <section class="page-section container" id="comment_list" style="max-width: 80%;">
-        <h2 style="text-align: center">댓글</h2>
+    <section class="page-section container" id="comment_list" style="width: 80%;">
+<!--        <h2 style="text-align: center">댓글</h2>-->
         <!-- Icon Divider-->
         <div class="divider-custom" id="dividers">
             <div class="divider-custom-line"></div>
@@ -168,7 +173,7 @@
         </div>
 
         <!-- 댓글 주의사항 -->
-        <div class="p-3" style="background-color: lemonchiffon; border-radius: 0.5em; ">
+        <div class="p-3" id="caution"style="background-color: lemonchiffon; border-radius: 0.5em; max-width: 1036.8px">
             <div>
                 <p style="font-weight: bold">💡 댓글 작성시 주의사항</p>
                 <small>소중한 개인정보 노출을 유의해 주세요! 연락이 필요하다면 개인 전화번호를 공유하기보다 카카오톡 ID를 남겨보세요.</small>
@@ -181,7 +186,7 @@
 
         <br/>
         <div>
-            <button type='button' class="btn btn-primary"
+            <button type='button' id="btn_main" class="btn btn-primary"
                     onclick="javascript : location.href='/#portfolio'">메인화면으로 돌아가기
             </button>
         </div>
