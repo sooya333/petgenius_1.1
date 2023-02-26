@@ -19,6 +19,7 @@ db = client.dbsparta
 # 각 페이지 연결 작업을 아직 못해서 각 페이지 기능 점검할 때 아래 3개 중 하나를 활성화해서 썼어요.
 @app.route('/')
 def home():
+    # db.comments.delete_many({'comment': '아왜안되냐고'})
     # return render_template('detail.html')
     # return render_template('write.html')
     return render_template('index.html')
@@ -76,6 +77,29 @@ def board_get():
     # return render_template('index.html', details=details, img_string_list=img_string_list)
 
 
+@app.route("/filter", methods=["GET"])
+def filter_get():
+    category = request.args.get("category")
+    role = request.args.get("role")
+    region = request.args.get("region")
+    condition = {"category": category, "role": role, "region": region}
+    details = list(db.genius.find(condition, {'_id': False}))
+    print("디비에서 가져온 디테일" + details)
+    img_binary_list = list(db.g_imgs.find({}, {'_id': False}))
+    img_string_list = []
+    print("디비 가져온 이미지 리스트" + img_string_list)
+    for i in range(len(details)):
+        img_binary = img_binary_list[i]
+        img_string = base64.b64encode(img_binary['img']).decode("utf-8")
+        img_string_list.append(img_string)
+    if details == '' or img_string_list == '':
+        print("필터의 디테일즈 이미지스트링리스트 값없음")
+    else:
+        print("필터의 디테일, 인코디드 값 있음")
+    return jsonify({'details': details, 'img_string_list': img_string_list})
+    # return render_template('index.html', details=details, img_string_list=img_string_list)
+
+
 @app.route("/detail", methods=["GET"])
 def detail_get():
     num = request.args.get("num")
@@ -110,7 +134,6 @@ def comment_get():
     else:
         print("num is None")
         cmt_list = []
-
 
     return render_template('comments.html', cmt_list=cmt_list)
 
