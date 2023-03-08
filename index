@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Pet Genius</title>
+    <!-- Favicon(수정X) -->
+    <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+          type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/static/css/styles.css" rel="stylesheet"/>
+    <script src="/static/js/scripts.js"></script>
+    <!-- jquery import -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            get_board();
+            // 배너버튼 클릭 시, category 선정되어 url 넘어감
+            $('.banner_btn').on('click',(e) => {
+                let value = e.target.value;
+                let ref = '/write?category='
+                let url = location.href = ref.concat(value);
+            })
+
+        });
+
+        function show_detail(num) {
+            window.location.href = "detail?num=" + num
+        }
+
+        $("#myButton").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/detail",
+                success: function (data) {
+                    // Data has been received, process it here
+                    let num = $(this).data("value");
+                    console.log('num:' + num)
+                    console.log()
+                }
+            });
+        });
+
+        let flag = 0
+
+        function click_Temp() {
+            flag += 9; // 출력할 카드의 수 9 증가
+            loof()
+            // showCards()
+        }
+
+        // // 카드 출력 함수
+        // function showCards() {
+        //     let cards = $("#cards-box .card");
+        //     // cards.hide(); // 모든 카드 숨김
+        //     for (let i = 0; i < cardLimit; i++) {
+        //         $(cards[i]).show(); // 출력할 카드만 표시
+        //     }
+        // }
+
+        let details
+        let img_string_list
+        function loof() {
+            console.log("길이 + img_string_list.length + "&" + details.length")
+            for (let i = flag; i < img_string_list.length; i++) {
+                        let img_string = img_string_list[i]
+                        let num = details[i]['num']
+                        let category = details[i]['category']
+                        let role = details[i]['role']
+                        let region = details[i]['region']
+                        let title = details[i]['title']
+                        let name = details[i]['name']
+                        // let content = details[i]['content']
+                        let time = details[i]['time']
+                        let category_color = '';
+                        if (category === '도와 주세요') {
+                            category_color = 'bg-danger';
+                        } else {
+                            category_color = 'bg-warning';
+                        }
+                        let role_color = '';
+                        if (role === '반려견 훈련사') {
+                            role_color = 'bg-primary';
+                        } else {
+                            role_color = 'bg-info';
+                        }
+                        let timeSlice = time.substring(0, 10)
+                        if (i - flag < 9) {
+                                let temp_html = `<!-- modal 대신 url 넣을 수 있도록 -->
+                                                <button class="card portfolio-item mx-auto align-items-center" data-bs-toggle="modal" data-bs-target="#portfolioModal1" type="button" id="myButton" onclick="show_detail(${num})">
+                                                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                                        <div class="portfolio-item-caption-content text-center text-white">
+                                                            <i>상세페이지 보기</i>
+                                                        </div>
+                                                    </div>
+                                                            <img class="card-img-top" height="200" src="data:image/*;base64,${img_string}"/>
+                                                                <div class="card-body">
+                                                                    <span class="badge rounded-pill ${category_color} mb-3">${category}</span>
+                                                                    <span class="badge rounded-pill ${role_color}">${role}</span>
+                                                                    <span class="badge rounded-pill bg-dark">${region}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h5 class="card-title">${title}</h5>
+                                                                    <span><strong>${name}</strong></span>
+                                                                    <span class="badge bg-light text-dark">${timeSlice}</span>
+                                                                </div>
+                                                </button>`
+                                $('#cards-box').append(temp_html)
+                            }
+                    }
+            }
+        // db에 저장된 글을 모두 가져와서 화면(아래 주석표시한 부분)에 붙여주는 펑션
+        function get_board() {
+            $.ajax({
+                type: 'GET',
+                url: '/board',
+                data: {},
+                success: function (response) {
+                    // 변수 response에 json형식의 데이타 담겨 옴
+                    // console.log(response['movies'])
+                    img_string_list = response['img_string_list']
+                    details = response['details']
+                    loof()
+                }
+
+            })
+        }
+    </script>
+    <style>
+        #b_btn1 {
+            left : 5.3%;
+        }
+        #b_btn2 {
+            right : 5.4%;
+        }
+        .banner_btn {
+            position: absolute;
+            top: 85%;
+            opacity: 0.8;
+        }
+        .carousel-control-prev, .carousel-control-next {
+            height: 150px;
+            margin-top: 17%;
+        }
+    </style>
+</head>
+<body id="page-top">
+<!-- 네비게이션(수정X)-->
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#page-top">Pet Genius</a>
+            <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                                                         href="#portfolio">게시판</a></li>
+                    <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded" href="/write">
+                            글 작성하기
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<!-- 이미지 배너(수정X) -->
+    <header class="bg-primary">
+        <div id="demo" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active"> <!-- 이미지1 -->
+                    <img class="banner" src="/static/img/banner/banner_main1.png" alt="main 이미지" class="d-block"/>
+                </div>
+                <div class="carousel-item"> <!-- 이미지2 -->
+                    <img class="banner" src="/static/img/banner/banner_main2.png" alt="도와주세요 이미지" class="d-block"/>
+                    <button class="btn btn-light btn-sm banner_btn" id="b_btn1" value="도와 주세요" >도움요청하러가기</button>
+                </div>
+                <div class="carousel-item"> <!-- 이미지3 -->
+                    <img class="banner" src="/static/img/banner/banner_main3.png" alt="도와드려요 이미지" class="d-block"/>
+                    <button class="btn btn-light btn-sm banner_btn" id="b_btn2" value="도와 드려요">프로필 올리러가기</button>
+                </div>
+            </div>
+
+            <!-- Left and right controls/icons -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </header>
+
+<!-- 여기에 각자가 맡은 Section 넣기 -->
+<!-- 게시판 -->
+<section class="page-section portfolio" id="portfolio">
+    <!-- 게시판 소개글 -->
+    <div class="container">
+        <!-- Portfolio Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">펫지니어스들의 소통공간</h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <h4 class="masthead-subheading text-center text-secondary mb-5">'펫시터'부터 '펫트레이너'까지! <br> 내 반려견을 위한 펫 지니어스들을 만나보세요
+        </h4>
+        <!-- 게시판 필터기능 -->
+        <div class="row justify-content-center">
+            <div class="form-group col-md-6 col-lg-4 mb-5">
+                <select id="category" name="category" title="구분" onchange="" class="form-select">
+                                <option value="ALL">:: 구분 ::</option>
+                                <option value="도와 주세요">
+                                    도와 주세요
+                                </option>
+                                <option value="도와 드려요">
+                                    도와 드려요
+                                </option>
+                            </select>
+            </div>
+            <div class="form-group col-md-6 col-lg-4 mb-5">
+                <select id="role" name="role" title="역할" onchange="" class="form-select">
+                                <option value="">:: 역할 ::</option>
+                                <option value="반려견 훈련사">
+                                    반려견 훈련사
+                                </option>
+                                <option value="펫시터">
+                                    펫시터
+                                </option>
+                </select>
+            </div>
+            <div class="form-group col-md-6 col-lg-4 mb-5">
+                <select id="region" name="region" title="시/도선택" onchange="" class="form-select">
+                                <option value="">:: 시/도 ::</option>
+                                <option value="서울특별시" title="서울특별시">
+                                    서울특별시
+                                </option>
+                                <option value="부산광역시" title="부산광역시"
+                                >
+                                    부산광역시
+                                </option>
+
+                                <option value="대구광역시" title="대구광역시"
+                                >
+                                    대구광역시
+                                </option>
+
+                                <option value="인천광역시" title="인천광역시"
+                                >
+                                    인천광역시
+                                </option>
+
+                                <option value="광주광역시" title="광주광역시"
+                                >
+                                    광주광역시
+                                </option>
+
+                                <option value="대전광역시" title="대전광역시"
+                                >
+                                    대전광역시
+                                </option>
+
+                                <option value="울산광역시" title="울산광역시"
+                                >
+                                    울산광역시
+                                </option>
+
+                                <option value="세종특별자치시" title="세종특별자치시"
+                                >
+                                    세종특별자치시
+                                </option>
+
+                                <option value="경기도" title="경기도"
+                                >
+                                    경기도
+                                </option>
+
+                                <option value="강원도" title="강원도"
+                                >
+                                    강원도
+                                </option>
+
+                                <option value="충청북도" title="충청북도"
+                                >
+                                    충청북도
+                                </option>
+
+                                <option value="충청남도" title="충청남도"
+                                >
+                                    충청남도
+                                </option>
+
+                                <option value="전라북도" title="전라북도"
+                                >
+                                    전라북도
+                                </option>
+
+                                <option value="전라남도" title="전라남도"
+                                >
+                                    전라남도
+                                </option>
+
+                                <option value="경상북도" title="경상북도"
+                                >
+                                    경상북도
+                                </option>
+
+                                <option value="경상남도" title="경상남도"
+                                >
+                                    경상남도
+                                </option>
+
+                                <option value="제주특별자치도" title="제주특별자치도"
+                                >
+                                    제주특별자치도
+                                </option>
+
+                            </select>
+            </div>
+            <div class="col-md-6 col-lg-1 mb-5 ">
+                <button type="button" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+
+        <!-- 게시판 목록 -->
+        <div class="row justify-content-center">
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-box">
+            </div>
+            <div class="col-md-6 col-lg-1 mb-5-add ">
+                <button type="button" class="btn btn-primary" onclick="click_Temp()">더보기</button>
+            </div>
+        </div>
+    </div>
+</section>
+<!---------------------------------------------------->
+<!-- Footer (수정X)-->
+<footer class="footer text-center">
+    <div class="container">
+        <div class="row">
+            <!-- Contact -->
+            <div class="col-lg-4">
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">CONTACT</h4>
+                <p class="lead mb-0">
+                    info@petgenius.com
+                    <br/>
+                    +82 - 2 - 123 - 5678
+                </p>
+            </div>
+            <!-- Social Icons-->
+            <div class="col-lg-4">
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">Social Media</h4>
+                <p class="lead">KakaoTalk
+                    <a class="btn btn-outline-light btn-social mx-2" target="_blank"
+                       href="https://open.kakao.com/o/siarMh2e">
+                        <i class="fa-solid fa-comment"></i>
+                    </a>
+                </p>
+            </div>
+            <!-- About Text-->
+            <div class="col-lg-4">
+                <h4 class="text-uppercase mb-4" style="color: lightslategray">About PET GENIUS</h4>
+                <p class="mb-0">
+                    반려견을 키우고 있지만 쉽지 않은 나날들! <br>
+                    펫시터나 트레이너를 만나고 싶지만 어디서 만나야 할지 <br>
+                    어떤 정보를 봐야 할지 모르는 분들을 위한 커뮤니티 플랫폼
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Copyright (수정X)-->
+<div class="copyright py-4 text-center text-white">
+    <div class="container">
+        <small>Seoul, Republic of Korea</small><br>
+        <small>Copyright &copy; SWCampB03 2023</small>
+    </div>
+</div>
+
+</body>
+</html>
